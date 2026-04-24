@@ -3,77 +3,42 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import FloatingButtons from "@/components/public/FloatingButtons";
 
-const allDrivers = [
-  {
-    name: "BP-T3",
-    printerType: "thermal",
-    os: ["windows", "macos"],
-    desc: "Dùng cho các dòng máy in KV804 và tương đương.",
-    version: "v7.11",
-    downloadWindows: "https://drive.google.com/file/d/1qpa0b8MYRSjpdAGq-kEzksgbZJuYRtwc/view?usp=sharing",
-    downloadMacos: "",
-  },
-  {
-    name: "365B",
-    printerType: "thermal",
-    os: ["windows", "macos"],
-    desc: "Dùng cho các dòng máy in tem nhãn 365B và tương đương.",
-    version: "v1.0.0",
-    downloadWindows: "https://drive.google.com/file/d/1jhuUqlXzuukQJd0ZbQTCUPgfLDIycUTc/view?usp=drive_link",
-    downloadMacos: "",
-  },
-  {
-    name: "Canon LBP6000",
-    printerType: "laser",
-    os: ["windows"],
-    desc: "Máy in laser đen trắng Canon LBP6000, thích hợp cho văn phòng.",
-    version: "v1.0.0",
-    downloadWindows: "",
-    downloadMacos: "",
-  },
-  {
-    name: "ZY307 — ZY606",
-    printerType: "thermal",
-    os: ["windows", "macos"],
-    desc: "Dùng cho các dòng máy in ZY307 và ZY606.",
-    version: "v1.0.0",
-    downloadWindows: "",
-    downloadMacos: "",
-  },
-  {
-    name: "XP-365B Pro",
-    printerType: "thermal",
-    os: ["windows"],
-    desc: "Dùng cho dòng máy in tem nhãn XP-365B Pro.",
-    version: "v2.1.0",
-    downloadWindows: "",
-    downloadMacos: "",
-  },
-  {
-    name: "HP LaserJet P1102",
-    printerType: "laser",
-    os: ["windows", "macos"],
-    desc: "Máy in laser HP LaserJet P1102 dùng cho văn phòng.",
-    version: "v1.2.0",
-    downloadWindows: "",
-    downloadMacos: "",
-  },
-];
+interface DbDriver {
+  id: string;
+  name: string;
+  model: string | null;
+  printerType: string | null;
+  version: string | null;
+  description: string | null;
+  files: { windows?: string; macos?: string } | null;
+  isActive: boolean;
+  sortOrder: number;
+}
 
-export default function DriversPageClient() {
+export default function DriversPageClient({ drivers }: { drivers: DbDriver[] }) {
   const [os, setOs] = useState("");
   const [printerType, setPrinterType] = useState("");
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
-    return allDrivers.filter((d) => {
-      const matchOs = !os || os === "all" || d.os.includes(os);
+    return drivers.filter((d) => {
+      const files = d.files ?? {};
+      const hasWindows = !!files.windows !== undefined;
+      const hasMacos = !!files.macos !== undefined;
+      const osArr = [
+        ...(files.windows !== undefined ? ["windows"] : []),
+        ...(files.macos !== undefined ? ["macos"] : []),
+      ];
+      const matchOs = !os || os === "all" || osArr.includes(os) || (!osArr.length);
       const matchType = !printerType || printerType === "all" || d.printerType === printerType;
       const matchSearch =
-        !search || d.name.toLowerCase().includes(search.toLowerCase()) || d.desc.toLowerCase().includes(search.toLowerCase());
+        !search ||
+        d.name.toLowerCase().includes(search.toLowerCase()) ||
+        (d.description ?? "").toLowerCase().includes(search.toLowerCase()) ||
+        (d.model ?? "").toLowerCase().includes(search.toLowerCase());
       return matchOs && matchType && matchSearch;
     });
-  }, [os, printerType, search]);
+  }, [drivers, os, printerType, search]);
 
   return (
     <>
@@ -170,52 +135,43 @@ export default function DriversPageClient() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((driver, i) => (
-                <div key={i} className="driver-card">
-                  <div className="driver-icon">🖨️</div>
-                  <h3 className="driver-name">{driver.name}</h3>
-                  <div className="driver-os-badges">
-                    {driver.os.includes("windows") && (
-                      <span className="driver-os-badge">Windows</span>
-                    )}
-                    {driver.os.includes("macos") && (
-                      <span className="driver-os-badge macos">macOS</span>
-                    )}
+              {filtered.map((driver) => {
+                const files = driver.files ?? {};
+                const hasWindows = "windows" in files;
+                const hasMacos = "macos" in files;
+                return (
+                  <div key={driver.id} className="driver-card">
+                    <div className="driver-icon">🖨️</div>
+                    <h3 className="driver-name">{driver.name}</h3>
+                    <div className="driver-os-badges">
+                      {hasWindows && <span className="driver-os-badge">Windows</span>}
+                      {hasMacos && <span className="driver-os-badge macos">macOS</span>}
+                    </div>
+                    <p className="driver-desc">{driver.description}</p>
+                    <div className="driver-actions">
+                      {hasWindows && (
+                        files.windows ? (
+                          <a href={files.windows} target="_blank" rel="noopener noreferrer" className="btn-download">
+                            ⬇️ Windows
+                          </a>
+                        ) : (
+                          <span className="btn-download opacity-50 cursor-not-allowed">⬇️ Windows</span>
+                        )
+                      )}
+                      {hasMacos && (
+                        files.macos ? (
+                          <a href={files.macos} target="_blank" rel="noopener noreferrer" className="btn-download macos-btn">
+                            ⬇️ macOS
+                          </a>
+                        ) : (
+                          <span className="btn-download macos-btn opacity-50 cursor-not-allowed">⬇️ macOS</span>
+                        )
+                      )}
+                    </div>
+                    <div className="driver-version">Phiên bản: {driver.version ?? "—"}</div>
                   </div>
-                  <p className="driver-desc">{driver.desc}</p>
-                  <div className="driver-actions">
-                    {driver.os.includes("windows") && (
-                      driver.downloadWindows ? (
-                        <a
-                          href={driver.downloadWindows}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-download"
-                        >
-                          ⬇️ Windows
-                        </a>
-                      ) : (
-                        <span className="btn-download opacity-50 cursor-not-allowed">⬇️ Windows</span>
-                      )
-                    )}
-                    {driver.os.includes("macos") && (
-                      driver.downloadMacos ? (
-                        <a
-                          href={driver.downloadMacos}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-download macos-btn"
-                        >
-                          ⬇️ macOS
-                        </a>
-                      ) : (
-                        <span className="btn-download macos-btn opacity-50 cursor-not-allowed">⬇️ macOS</span>
-                      )
-                    )}
-                  </div>
-                  <div className="driver-version">Phiên bản: {driver.version}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

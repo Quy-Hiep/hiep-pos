@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import DriversPageClient from "@/components/public/DriversPageClient";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Tải Driver Máy In - Hiệp POS",
@@ -13,6 +14,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DriversPage() {
-  return <DriversPageClient />;
+export default async function DriversPage() {
+  const drivers = await prisma.driver.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" },
+  });
+
+  const mapped = drivers.map((d) => ({
+    ...d,
+    files: (d.files as { windows?: string; macos?: string } | null) ?? null,
+  }));
+
+  return <DriversPageClient drivers={mapped} />;
 }
