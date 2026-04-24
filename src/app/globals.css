@@ -553,24 +553,9 @@ body {
 /* ==========================================
    Floating Action Buttons
    ========================================== */
-@keyframes fabBounceAnim {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-@keyframes radiateGreen {
-  0% { box-shadow: 0 0 8px 0 rgba(16,185,129,1); }
-  70% { box-shadow: 0 0 12px 15px rgba(16,185,129,0.5); }
-  100% { box-shadow: 0 0 8px 25px rgba(16,185,129,0); }
-}
-@keyframes radiateBlue {
-  0% { box-shadow: 0 0 8px 0 rgba(0,132,255,1); }
-  70% { box-shadow: 0 0 12px 15px rgba(0,132,255,0.5); }
-  100% { box-shadow: 0 0 8px 25px rgba(0,132,255,0); }
-}
-@keyframes radiatePurple {
-  0% { box-shadow: 0 0 8px 0 rgba(66,103,178,1); }
-  70% { box-shadow: 0 0 12px 15px rgba(66,103,178,0.5); }
-  100% { box-shadow: 0 0 8px 25px rgba(66,103,178,0); }
+@keyframes fabRing {
+  0%   { transform: scale(1);    opacity: 0.45; }
+  100% { transform: scale(1.55); opacity: 0; }
 }
 .floating-btn-group {
   position: fixed;
@@ -579,32 +564,50 @@ body {
   z-index: 999;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 28px;
   align-items: flex-end;
 }
 .fab-item {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   color: #fff;
-  font-size: 24px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-  transition: all 0.3s ease;
-  border: none;
-  animation: fabBounceAnim 2s ease-in-out infinite;
+  font-size: 22px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
-  overflow: hidden;
 }
-.fab-item:hover { transform: scale(1.15); box-shadow: 0 10px 28px rgba(0,0,0,0.2); }
-.fab-call { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); animation: radiateGreen 1.5s ease-out infinite; }
-.fab-zalo { background: linear-gradient(135deg, #0084ff 0%, #0066cc 100%); animation: radiateBlue 1.5s ease-out infinite; }
-.fab-facebook { background: linear-gradient(135deg, #0866ff 0%, #0052cc 100%); animation: radiatePurple 1.5s ease-out infinite; }
+.fab-item::before,
+.fab-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: fabRing 2s ease-out infinite;
+}
+.fab-item::after { animation-delay: 1s; }
+.fab-item:hover { transform: scale(1.12); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+.fab-call         { background: #ef4444; }
+.fab-call::before,
+.fab-call::after  { background: #ef4444; }
+.fab-zalo         { background: #0068ff; }
+.fab-zalo::before,
+.fab-zalo::after  { background: #0068ff; }
+.fab-facebook         { background: #1877f2; }
+.fab-facebook::before,
+.fab-facebook::after  { background: #1877f2; }
 .fab-icon-zalo,
-.fab-icon-facebook { width: 32px; height: 32px; object-fit: contain; display: block; z-index: 2; position: relative; }
+.fab-icon-facebook { width: 30px; height: 30px; object-fit: contain; display: block; position: relative; z-index: 1; }
+@media (max-width: 768px) {
+  .floating-btn-group { bottom: 20px; right: 16px; gap: 24px; }
+  .fab-item { width: 46px; height: 46px; font-size: 20px; }
+  .fab-icon-zalo,
+  .fab-icon-facebook { width: 26px; height: 26px; }
+}
 
 /* ==========================================
    Page Hero Banner (Products / News / About / Customers / Drivers)
