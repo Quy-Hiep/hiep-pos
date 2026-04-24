@@ -61,8 +61,9 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   if (!article) notFound();
 
-  const currentIndex = allPublished.findIndex((a) => a.slug === slug);
-  const others = allPublished.filter((a) => a.slug !== slug).slice(0, 4).map(mapArticle);
+  type PubArticle = (typeof allPublished)[0];
+  const currentIndex = allPublished.findIndex((a: PubArticle) => a.slug === slug);
+  const others = allPublished.filter((a: PubArticle) => a.slug !== slug).slice(0, 4).map(mapArticle);
   const prev = currentIndex > 0 ? mapArticle(allPublished[currentIndex - 1]) : null;
   const next = currentIndex < allPublished.length - 1 ? mapArticle(allPublished[currentIndex + 1]) : null;
 
