@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import ProgressBar from "@/components/ui/ProgressBar";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="vi" className={inter.className}>
       <body className="min-h-screen flex flex-col">
-        <ProgressBar />
+        <Suspense fallback={null}>
+          <ProgressBar />
+        </Suspense>
         {children}
       </body>
     </html>
