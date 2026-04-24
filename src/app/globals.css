@@ -1780,6 +1780,44 @@ body {
 .admin-stat-label { font-size: 0.8rem; color: var(--color-text-light); font-weight: 500; }
 .admin-stat-value { font-size: 1.6rem; font-weight: 700; color: var(--color-text); }
 
+/* Admin toolbar */
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.admin-toolbar-left { display: flex; align-items: center; gap: 12px; }
+.admin-count { font-size: 0.875rem; color: var(--color-text-light); font-weight: 500; }
+.admin-btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.admin-btn-primary:hover { background: var(--color-primary-dark); color: #fff; }
+
+/* Table helpers */
+.admin-table-empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+}
+.admin-table-actions { display: flex; gap: 6px; align-items: center; }
+
 /* Admin tables */
 .admin-table-card {
   background: #fff;
@@ -1861,6 +1899,11 @@ body {
 .admin-badge-draft { background: #fef3c7; color: #d97706; }
 .admin-badge-pending { background: #dbeafe; color: #2563eb; }
 .admin-badge-cancelled { background: #fee2e2; color: #dc2626; }
+.badge-green { background: #dcfce7; color: #16a34a; }
+.badge-blue { background: #dbeafe; color: #2563eb; }
+.badge-purple { background: #ede9fe; color: #7c3aed; }
+.badge-gray { background: #f3f4f6; color: #6b7280; }
+.badge-orange { background: #ffedd5; color: #ea580c; }
 
 /* Action buttons in table */
 .admin-action-btns { display: flex; gap: 6px; }

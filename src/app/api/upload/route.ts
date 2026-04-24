@@ -31,12 +31,16 @@ export async function POST(req: Request) {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  const uploadDir = join(process.cwd(), "public", "uploads");
-  await mkdir(uploadDir, { recursive: true });
+  try {
+    const uploadDir = join(process.cwd(), "public", "uploads");
+    await mkdir(uploadDir, { recursive: true });
 
-  const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
-  const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  await writeFile(join(uploadDir, filename), buffer);
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    await writeFile(join(uploadDir, filename), buffer);
 
-  return NextResponse.json({ url: `/uploads/${filename}` });
+    return NextResponse.json({ url: `/uploads/${filename}` });
+  } catch {
+    return NextResponse.json({ error: "Không thể lưu file, thử lại sau" }, { status: 500 });
+  }
 }

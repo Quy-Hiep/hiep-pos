@@ -26,10 +26,16 @@ export default function ImageUpload({ value, onChange, label = "Ảnh" }: Props)
       fd.append("file", file);
 
       const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
+
+      let data: { url?: string; error?: string } = {};
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error(`Upload thất bại (HTTP ${res.status})`);
+      }
 
       if (!res.ok) throw new Error(data.error || "Upload thất bại");
-      onChange(data.url);
+      onChange(data.url!);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload thất bại");
     } finally {
