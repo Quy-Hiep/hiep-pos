@@ -13,10 +13,13 @@ const TYPE_LABEL: Record<string, string> = {
   CUSTOMER_STORY: "Câu Chuyện Khách Hàng",
 };
 
-function mapArticle(a: {
+type RawArticle = {
   slug: string; type: string; title: string; excerpt: string | null;
   featuredImage: string | null; publishedAt: Date | null;
-}) {
+  content?: string | null; readingTime?: number | null;
+};
+
+function mapArticle(a: RawArticle) {
   return {
     slug: a.slug,
     category: a.type.toLowerCase(),
@@ -28,6 +31,8 @@ function mapArticle(a: {
       ? a.publishedAt.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })
       : "",
     author: "Hiệp POS Team",
+    content: a.content ?? "",
+    readingTime: a.readingTime ?? null,
   };
 }
 
