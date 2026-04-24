@@ -6,6 +6,7 @@ import Image from "next/image";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: "📊" },
+  { href: "/admin/categories", label: "Thể loại", icon: "🏷️" },
   { href: "/admin/products", label: "Sản phẩm", icon: "📦" },
   { href: "/admin/articles", label: "Tin tức", icon: "📰" },
   { href: "/admin/drivers", label: "Driver", icon: "💾" },

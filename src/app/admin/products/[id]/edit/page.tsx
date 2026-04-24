@@ -5,16 +5,25 @@ import EditProductForm from "@/components/admin/EditProductForm";
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: { images: { orderBy: { sortOrder: "asc" } } },
-  });
+  const [product, productCategories] = await Promise.all([
+    prisma.product.findUnique({
+      where: { id },
+      include: { images: { orderBy: { sortOrder: "asc" } } },
+    }),
+    prisma.category.findMany({
+      where: { type: "PRODUCT", isActive: true },
+      orderBy: { menuOrder: "asc" },
+      select: { id: true, name: true },
+    }),
+  ]);
+
   if (!product) notFound();
 
   const data = {
     id: product.id,
     name: product.name,
     slug: product.slug,
+    categoryId: product.categoryId ?? "",
     price: product.price ? String(product.price) : "",
     originalPrice: product.originalPrice ? String(product.originalPrice) : "",
     description: product.description ?? "",
@@ -26,5 +35,5 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     isActive: product.isActive,
   };
 
-  return <EditProductForm product={data} />;
+  return <EditProductForm product={data} categoryOptions={productCategories} />;
 }

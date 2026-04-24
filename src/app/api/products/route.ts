@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { name, slug, price, originalPrice, description, fullDescription, badge, warranty, images, isFeatured, isActive } = body;
+    const { name, slug, categoryId, price, originalPrice, description, fullDescription, badge, warranty, images, isFeatured, isActive } = body;
 
     if (!name) return NextResponse.json({ error: "Tên sản phẩm không được để trống" }, { status: 400 });
 
@@ -37,6 +37,7 @@ export async function POST(req: Request) {
       data: {
         name,
         slug: slug || name.toLowerCase().replace(/\s+/g, "-"),
+        categoryId: categoryId || null,
         price: price ? parseFloat(price) : 0,
         originalPrice: originalPrice ? parseFloat(originalPrice) : null,
         description: description || null,
