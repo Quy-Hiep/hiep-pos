@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
-import ImageUpload from "@/components/admin/ImageUpload";
+import MultiImageUpload, { ImageItem } from "@/components/admin/MultiImageUpload";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 
 const categories = ["Máy POS", "Máy In", "Máy Quét", "Vật Tư", "Phụ Kiện"];
@@ -19,7 +19,7 @@ export interface ProductFormData {
   fullDescription: string;
   badge: string;
   warranty: string;
-  featuredImage: string;
+  images: ImageItem[];
   isFeatured: boolean;
   isActive: boolean;
 }
@@ -31,6 +31,7 @@ export default function EditProductForm({ product }: { product: ProductFormData 
   const [error, setError] = useState("");
 
   const [form, setForm] = useState<ProductFormData>(product);
+  const [images, setImages] = useState<ImageItem[]>(product.images);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value, type } = e.target;
@@ -49,7 +50,7 @@ export default function EditProductForm({ product }: { product: ProductFormData 
       const res = await fetch(`/api/products/${product.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, images }),
       });
 
       if (!res.ok) {
@@ -110,10 +111,10 @@ export default function EditProductForm({ product }: { product: ProductFormData 
                 <input name="warranty" type="text" className="admin-form-input" value={form.warranty} onChange={handleChange} title="Bảo hành" placeholder="VD: 12 tháng" />
               </div>
               <div className="admin-form-group admin-form-full">
-                <ImageUpload
+                <MultiImageUpload
                   label="Ảnh sản phẩm"
-                  value={form.featuredImage}
-                  onChange={(url) => setForm((prev) => ({ ...prev, featuredImage: url }))}
+                  images={images}
+                  onChange={setImages}
                 />
               </div>
               <div className="admin-form-group admin-form-full">

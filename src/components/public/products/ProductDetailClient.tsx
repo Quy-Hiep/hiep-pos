@@ -9,6 +9,7 @@ type Product = {
   category: string;
   name: string;
   image: string;
+  images: { url: string; alt?: string }[];
   price: string;
   oldPrice?: string;
   desc: string;
@@ -19,6 +20,8 @@ type Product = {
 
 export default function ProductDetailClient({ product }: { product: Product }) {
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "reviews">("desc");
+  const allImages = product.images.length > 0 ? product.images : [{ url: product.image, alt: product.name }];
+  const [activeImg, setActiveImg] = useState(0);
 
   return (
     <>
@@ -41,25 +44,35 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             <div>
               <div className="product-main-image">
                 <Image
-                  src={product.image}
-                  alt={product.name}
+                  src={allImages[activeImg].url}
+                  alt={allImages[activeImg].alt || product.name}
                   width={600}
                   height={450}
                   style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }}
                   priority
                 />
               </div>
-              <div className="product-thumbnails">
-                <div className="product-thumbnail active">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={80}
-                    height={80}
-                    style={{ width: "auto", height: "auto" }}
-                  />
+              {allImages.length > 1 && (
+                <div className="product-thumbnails">
+                  {allImages.map((img, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`product-thumbnail${i === activeImg ? " active" : ""}`}
+                      onClick={() => setActiveImg(i)}
+                      title={img.alt || `Ảnh ${i + 1}`}
+                    >
+                      <Image
+                        src={img.url}
+                        alt={img.alt || `Ảnh ${i + 1}`}
+                        width={80}
+                        height={80}
+                        style={{ width: "auto", height: "auto" }}
+                      />
+                    </button>
+                  ))}
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Info */}

@@ -45,6 +45,7 @@ export default async function ProductDetailPage({ params }: Props) {
     category: p.category?.name ?? "",
     name: p.name,
     image: p.images[0]?.url ?? "/images/products/may-in-804.png",
+    images: p.images.map((img) => ({ url: img.url, alt: img.alt ?? "" })),
     price: Number(p.price) > 0 ? fmtPrice(Number(p.price)) : "Liên hệ",
     oldPrice: p.originalPrice && Number(p.originalPrice) > 0 ? fmtPrice(Number(p.originalPrice)) : undefined,
     desc: p.fullDescription ?? p.description ?? p.name,

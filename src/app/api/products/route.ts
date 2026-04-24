@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { name, slug, price, originalPrice, description, fullDescription, badge, warranty, featuredImage, isFeatured, isActive } = body;
+    const { name, slug, price, originalPrice, description, fullDescription, badge, warranty, images, isFeatured, isActive } = body;
 
     if (!name) return NextResponse.json({ error: "Tên sản phẩm không được để trống" }, { status: 400 });
 
@@ -45,7 +45,17 @@ export async function POST(req: Request) {
         warranty: warranty || null,
         isFeatured: isFeatured ?? false,
         isActive: isActive ?? true,
-        ...(featuredImage ? { images: { create: { url: featuredImage, sortOrder: 0 } } } : {}),
+        ...(Array.isArray(images) && images.length > 0
+          ? {
+              images: {
+                create: images.map((img: { url: string; alt?: string; sortOrder: number }) => ({
+                  url: img.url,
+                  alt: img.alt || null,
+                  sortOrder: img.sortOrder,
+                })),
+              },
+            }
+          : {}),
       },
     });
 

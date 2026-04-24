@@ -20,7 +20,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   try {
     const body = await req.json();
-    const { name, slug, price, originalPrice, description, fullDescription, badge, warranty, featuredImage, isFeatured, isActive } = body;
+    const { name, slug, price, originalPrice, description, fullDescription, badge, warranty, images, isFeatured, isActive } = body;
 
     const product = await prisma.product.update({
       where: { id },
@@ -38,17 +38,18 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       },
     });
 
-    // Upsert first image
-    if (featuredImage !== undefined) {
-      const existing = await prisma.productImage.findFirst({ where: { productId: id }, orderBy: { sortOrder: "asc" } });
-      if (featuredImage) {
-        if (existing) {
-          await prisma.productImage.update({ where: { id: existing.id }, data: { url: featuredImage } });
-        } else {
-          await prisma.productImage.create({ data: { productId: id, url: featuredImage, sortOrder: 0 } });
-        }
-      } else if (existing) {
-        await prisma.productImage.delete({ where: { id: existing.id } });
+    // Replace all images
+    if (Array.isArray(images)) {
+      await prisma.productImage.deleteMany({ where: { productId: id } });
+      if (images.length > 0) {
+        await prisma.productImage.createMany({
+          data: images.map((img: { url: string; alt?: string; sortOrder: number }) => ({
+            productId: id,
+            url: img.url,
+            alt: img.alt || null,
+            sortOrder: img.sortOrder,
+          })),
+        });
       }
     }
 

@@ -7,7 +7,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
+    include: { images: { orderBy: { sortOrder: "asc" } } },
   });
   if (!product) notFound();
 
@@ -21,7 +21,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     fullDescription: product.fullDescription ?? "",
     badge: product.badge ?? "",
     warranty: product.warranty ?? "",
-    featuredImage: product.images[0]?.url ?? "",
+    images: product.images.map((img) => ({ url: img.url, alt: img.alt ?? "", sortOrder: img.sortOrder })),
     isFeatured: product.isFeatured,
     isActive: product.isActive,
   };
