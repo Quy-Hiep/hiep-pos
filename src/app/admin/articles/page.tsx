@@ -40,7 +40,7 @@ export default async function AdminArticlesPage() {
                 </tr>
               </thead>
               <tbody>
-                {articles.map((a, i) => (
+                {articles.map((a: (typeof articles)[0], i: number) => (
                   <tr key={a.id}>
                     <td className="admin-td-muted">{i + 1}</td>
                     <td className="admin-td-bold-max">{a.title}</td>

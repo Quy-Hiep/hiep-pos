@@ -46,7 +46,7 @@ export default async function AdminProductsPage() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((p, i) => (
+                {products.map((p: (typeof products)[0], i: number) => (
                   <tr key={p.id}>
                     <td className="admin-td-muted">{i + 1}</td>
                     <td className="admin-td-bold">{p.name}</td>
