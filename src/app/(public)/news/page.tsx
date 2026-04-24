@@ -29,7 +29,8 @@ export default async function NewsPage() {
     orderBy: { publishedAt: "desc" },
   });
 
-  const articles = dbArticles.map((a, i) => ({
+  type DbArticle = (typeof dbArticles)[0];
+  const articles = dbArticles.map((a: DbArticle, i: number) => ({
     slug: a.slug,
     category: a.type.toLowerCase(),
     categoryLabel: TYPE_LABEL[a.type] ?? a.type,
@@ -43,10 +44,10 @@ export default async function NewsPage() {
     featured: i === 0,
   }));
 
-  const types = [...new Set(dbArticles.map((a) => a.type))];
+  const types = [...new Set<string>(dbArticles.map((a: DbArticle) => a.type))];
   const filters = [
     { key: "all", label: "Tất cả" },
-    ...types.map((t) => ({ key: t.toLowerCase(), label: TYPE_LABEL[t] ?? t })),
+    ...types.map((t: string) => ({ key: t.toLowerCase(), label: TYPE_LABEL[t] ?? t })),
   ];
 
   return <NewsPageClient articles={articles} filters={filters} />;
