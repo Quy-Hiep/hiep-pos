@@ -13,6 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://hieppos.com"),
   title: "Hiệp POS - Giải pháp bán hàng chuyên nghiệp",
   description: "Cung cấp máy POS, máy in hóa đơn, máy quét mã vạch và vật tư chính hãng.",
 };

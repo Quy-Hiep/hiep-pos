@@ -11,6 +11,8 @@ type Article = {
   image: string;
   date: string;
   author: string;
+  content: string;
+  readingTime: number | null;
 };
 
 type Props = {
@@ -47,7 +49,7 @@ export default function ArticleDetailClient({ article, others, prev, next }: Pro
                 <div className="article-meta-row">
                   <span>📅 {article.date}</span>
                   <span>✍️ {article.author}</span>
-                  <span>⏱️ 5 phút đọc</span>
+                  {article.readingTime && <span>⏱️ {article.readingTime} phút đọc</span>}
                 </div>
               </div>
 
@@ -64,40 +66,16 @@ export default function ArticleDetailClient({ article, others, prev, next }: Pro
               </figure>
 
               {/* Content */}
-              <div className="article-content">
-                <h2>Giới thiệu</h2>
-                <p>{article.desc}</p>
-
-                <h2>Nội dung chi tiết</h2>
-                <p>
-                  Hiệp POS luôn nỗ lực cung cấp các giải pháp bán hàng tốt nhất cho doanh nghiệp Việt Nam.
-                  Với đội ngũ kỹ thuật giàu kinh nghiệm và hệ thống hỗ trợ 24/7, chúng tôi cam kết đồng
-                  hành cùng bạn trong mọi giai đoạn kinh doanh.
-                </p>
-
-                <h2>Tính năng nổi bật</h2>
-                <ul>
-                  <li><strong>Giao diện thân thiện:</strong> Dễ sử dụng ngay cả với người dùng mới.</li>
-                  <li><strong>Báo cáo chi tiết:</strong> Theo dõi doanh thu, tồn kho theo thời gian thực.</li>
-                  <li><strong>Đa kênh bán hàng:</strong> Kết nối online và offline liền mạch.</li>
-                  <li><strong>Hỗ trợ 24/7:</strong> Đội ngũ kỹ thuật sẵn sàng hỗ trợ bất kỳ lúc nào.</li>
-                  <li><strong>Bảo mật cao:</strong> Dữ liệu được mã hóa và sao lưu tự động.</li>
-                </ul>
-
-                <blockquote>
-                  &quot;Hiệp POS là người bạn đồng hành đáng tin cậy cho mọi doanh nghiệp bán lẻ Việt Nam.
-                  Chúng tôi không ngừng cải tiến để phục vụ bạn tốt hơn.&quot;
-                  <footer>— Đội ngũ Hiệp POS</footer>
-                </blockquote>
-
-                <h2>Liên hệ hỗ trợ</h2>
-                <p>Mọi thắc mắc vui lòng liên hệ với chúng tôi:</p>
-                <ul>
-                  <li>Điện thoại: <a href="tel:0855285872">085 528 5872</a></li>
-                  <li>Zalo: <a href="https://zalo.me/0855285872" target="_blank" rel="noopener noreferrer">Zalo.me/0855285872</a></li>
-                  <li>Facebook: <a href="https://www.facebook.com/nquyhiep" target="_blank" rel="noopener noreferrer">facebook.com/nquyhiep</a></li>
-                </ul>
-              </div>
+              {article.content ? (
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{ __html: article.content }}
+                />
+              ) : (
+                <div className="article-content">
+                  <p>{article.desc}</p>
+                </div>
+              )}
 
               {/* Tags */}
               <div className="article-tags-row">
