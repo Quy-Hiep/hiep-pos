@@ -13,6 +13,7 @@ type Product = {
   price: string;
   oldPrice?: string;
   desc: string;
+  fullDescription: string;
   shortDesc: string;
   features: string[];
   specs: { label: string; value: string }[];
@@ -163,20 +164,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
           <div className={`detail-tab-content ${activeTab === "desc" ? "active" : ""}`}>
             <div className="detail-tab-body">
-              <h3>{product.name}</h3>
-              <p>{product.desc}</p>
-              <h4>Tính năng nổi bật</h4>
-              <ul>
-                {product.features.map((f, i) => (
-                  <li key={i}><strong>{f}</strong></li>
-                ))}
-              </ul>
-              <h4>Liên hệ hỗ trợ</h4>
-              <p>Mọi thắc mắc vui lòng liên hệ:</p>
-              <ul>
-                <li>Điện thoại: <a href="tel:0855285872">085 528 5872</a></li>
-                <li>Zalo: <a href="https://zalo.me/0855285872" target="_blank" rel="noopener noreferrer">Zalo.me/0855285872</a></li>
-              </ul>
+              {product.fullDescription ? (
+                <div dangerouslySetInnerHTML={{ __html: product.fullDescription }} />
+              ) : (
+                <p>{product.desc}</p>
+              )}
             </div>
           </div>
 
