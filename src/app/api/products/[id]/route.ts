@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -54,6 +55,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       }
     }
 
+    revalidatePath("/", "page");
+    revalidatePath("/products", "page");
+    revalidatePath(`/products/${product.slug}`, "page");
     return NextResponse.json(product);
   } catch {
     return NextResponse.json({ error: "Lỗi khi cập nhật sản phẩm" }, { status: 500 });
@@ -66,7 +70,11 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
+    const product = await prisma.product.findUnique({ where: { id }, select: { slug: true } });
     await prisma.product.delete({ where: { id } });
+    revalidatePath("/", "page");
+    revalidatePath("/products", "page");
+    if (product?.slug) revalidatePath(`/products/${product.slug}`, "page");
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Lỗi khi xóa sản phẩm" }, { status: 500 });
