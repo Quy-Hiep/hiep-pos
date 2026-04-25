@@ -45,11 +45,15 @@ export async function POST(req: Request) {
       .from(BUCKET)
       .upload(filename, bytes, { contentType: file.type, upsert: false });
 
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[upload] Supabase error:", error);
+      return NextResponse.json({ error: `Supabase: ${error.message}` }, { status: 500 });
+    }
 
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(filename);
     return NextResponse.json({ url: data.publicUrl });
   } catch (err) {
+    console.error("[upload] Unexpected error:", err);
     const msg = err instanceof Error ? err.message : "Không thể lưu file";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
