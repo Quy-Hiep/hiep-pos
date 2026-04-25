@@ -61,8 +61,8 @@ export async function POST(req: Request) {
       },
     });
 
-    revalidatePath("/", "page");
-    revalidatePath("/products", "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/products", "layout");
     return NextResponse.json(product, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Lỗi khi tạo sản phẩm" }, { status: 500 });

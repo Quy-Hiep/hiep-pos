@@ -3,6 +3,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+export const dynamic = "force-dynamic";
+
 function formatPrice(price: unknown): string {
   const num = Number(price);
   if (!num) return "Liên hệ";

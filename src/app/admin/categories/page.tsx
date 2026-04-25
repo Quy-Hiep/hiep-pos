@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import AdminHeader from "@/components/admin/AdminHeader";
 import DeleteCategoryBtn from "@/components/admin/DeleteCategoryBtn";
 
+export const dynamic = "force-dynamic";
+
 const typeLabel: Record<string, string> = {
   PRODUCT: "Sản phẩm",
   ARTICLE: "Tin tức",

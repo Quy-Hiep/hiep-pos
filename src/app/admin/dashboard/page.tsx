@@ -2,6 +2,8 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const quickLinks = [
   { label: "Thêm sản phẩm mới", href: "/admin/products/new", icon: "+" },
   { label: "Viết bài mới", href: "/admin/articles/new", icon: "+" },

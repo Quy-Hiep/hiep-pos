@@ -3,6 +3,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+export const dynamic = "force-dynamic";
+
 const typeLabels: Record<string, string> = {
   NEWS: "Tin tức",
   GUIDE: "Hướng dẫn",

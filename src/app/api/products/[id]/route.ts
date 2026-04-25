@@ -55,9 +55,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       }
     }
 
-    revalidatePath("/", "page");
-    revalidatePath("/products", "page");
-    revalidatePath(`/products/${product.slug}`, "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/products", "layout");
+    revalidatePath(`/products/${product.slug}`, "layout");
     return NextResponse.json(product);
   } catch {
     return NextResponse.json({ error: "Lỗi khi cập nhật sản phẩm" }, { status: 500 });
@@ -72,9 +72,9 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   try {
     const product = await prisma.product.findUnique({ where: { id }, select: { slug: true } });
     await prisma.product.delete({ where: { id } });
-    revalidatePath("/", "page");
-    revalidatePath("/products", "page");
-    if (product?.slug) revalidatePath(`/products/${product.slug}`, "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/products", "layout");
+    if (product?.slug) revalidatePath(`/products/${product.slug}`, "layout");
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Lỗi khi xóa sản phẩm" }, { status: 500 });

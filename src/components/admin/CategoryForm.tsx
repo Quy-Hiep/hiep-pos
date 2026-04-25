@@ -91,7 +91,7 @@ export default function CategoryForm({ initialData, parentOptions, mode }: Props
       }
 
       setSuccess(true);
-      setTimeout(() => router.push("/admin/categories"), 1200);
+      setTimeout(() => { router.refresh(); router.push("/admin/categories"); }, 1200);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Đã xảy ra lỗi");
     } finally {

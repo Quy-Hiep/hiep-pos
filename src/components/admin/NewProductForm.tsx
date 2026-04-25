@@ -71,7 +71,7 @@ export default function NewProductForm({ categoryOptions }: { categoryOptions: C
       }
 
       setSuccess(true);
-      setTimeout(() => router.push("/admin/products"), 1200);
+      setTimeout(() => { router.refresh(); router.push("/admin/products"); }, 1200);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Đã xảy ra lỗi");
     } finally {

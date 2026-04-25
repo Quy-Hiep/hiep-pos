@@ -61,7 +61,7 @@ export default function EditArticleForm({ article }: { article: ArticleFormData 
       }
 
       setSuccess(true);
-      setTimeout(() => router.push("/admin/articles"), 1200);
+      setTimeout(() => { router.refresh(); router.push("/admin/articles"); }, 1200);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Đã xảy ra lỗi");
     } finally {
