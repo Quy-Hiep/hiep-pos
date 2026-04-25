@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { createClient } from "@supabase/supabase-js";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const BUCKET = "uploads";
+
+function getSupabase() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("Thiếu cấu hình Supabase Storage");
+  return createClient(url, key);
+}
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -28,19 +35,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "File quá lớn, tối đa 5MB" }, { status: 400 });
   }
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-
   try {
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
+    const supabase = getSupabase();
     const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    await writeFile(join(uploadDir, filename), buffer);
+    const bytes = await file.arrayBuffer();
 
-    return NextResponse.json({ url: `/uploads/${filename}` });
-  } catch {
-    return NextResponse.json({ error: "Không thể lưu file, thử lại sau" }, { status: 500 });
+    const { error } = await supabase.storage
+      .from(BUCKET)
+      .upload(filename, bytes, { contentType: file.type, upsert: false });
+
+    if (error) throw new Error(error.message);
+
+    const { data } = supabase.storage.from(BUCKET).getPublicUrl(filename);
+    return NextResponse.json({ url: data.publicUrl });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Không thể lưu file";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
