@@ -21,7 +21,7 @@ export default function CTASection({
       style={{ background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)" }}
     >
       <div className="container mx-auto max-w-7xl px-4 text-center">
-        <h2 className="title-section text-white mb-3">{title}</h2>
+        <h2 className="title-section !text-white mb-3">{title}</h2>
         <p className="text-white/75 mb-8 mx-auto max-w-xl">{desc}</p>
         <div className="flex justify-center gap-3 flex-wrap">
           <a href={`tel:${phone}`} className="btn-cta-primary">

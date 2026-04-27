@@ -41,9 +41,9 @@ export default function HeaderClient({ navLinks }: { navLinks: NavLink[] }) {
             <Image
               src="/images/logo.png"
               alt="Hiệp POS"
-              width={120}
-              height={40}
-              className="h-10 object-contain"
+              width={140}
+              height={50}
+              className="h-14 object-contain"
               style={{ width: "auto" }}
               priority
             />

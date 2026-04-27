@@ -62,9 +62,9 @@ export default function Footer() {
               <Image
                 src="/images/logo.png"
                 alt="Hiệp POS"
-                width={120}
-                height={40}
-                className="h-10 brightness-0 invert"
+                width={130}
+                height={45}
+                className="h-12 brightness-0 invert"
                 style={{ width: "auto" }}
               />
             </Link>
