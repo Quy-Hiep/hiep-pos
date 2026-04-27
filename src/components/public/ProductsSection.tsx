@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import ProductCard from "@/components/public/ProductCard";
 
 type Product = {
   image: string;
@@ -154,60 +154,6 @@ const defaultTabs = [
   { label: "Phần Mềm", filter: "phan-mem" },
 ];
 
-function ProductCard({ product }: { product: Product }) {
-  return (
-    <div className="product-card-home">
-      <div className="product-img-wrapper">
-        <Image
-          src={product.image}
-          alt={product.alt}
-          width={400}
-          height={300}
-          className="product-img"
-          style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }}
-        />
-        {product.badge && (
-          <span className={`product-badge ${product.badgeHot ? "badge-hot" : ""}`}>
-            {product.badge}
-          </span>
-        )}
-      </div>
-      <div className="product-info">
-        <span className={`product-category-tag ${product.categoryStyle === "accessory" ? "tag-accessory" : ""}`}>
-          {product.categoryLabel}
-        </span>
-        <h4 className="product-title">
-          <Link href={product.slug}>{product.name}</Link>
-        </h4>
-        <p className="product-desc">{product.desc}</p>
-        <div className="product-price">
-          {product.price}
-          {product.priceOld && <span className="price-old">{product.priceOld}</span>}
-          {product.priceUnit && <span className="price-unit">{product.priceUnit}</span>}
-        </div>
-        <ul className="features-list">
-          {product.features.map((f) => (
-            <li key={f}>
-              <svg className="w-4 h-4 text-[var(--color-secondary)] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
-        <div className="cta-buttons">
-          <a href="tel:0855285872" className="btn-buy">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-            </svg>
-            Mua ngay
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function ProductsSection({
   products: propProducts,
   tabs: propTabs,
@@ -245,9 +191,22 @@ export default function ProductsSection({
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3 lg:gap-6">
           {filtered.map((product) => (
-            <ProductCard key={product.name} product={product} />
+            <ProductCard
+              key={product.name}
+              image={product.image}
+              alt={product.alt}
+              badge={product.badge}
+              badgeType={product.badgeHot ? "badge-hot" : ""}
+              name={product.name}
+              slug={product.slug}
+              desc={product.desc}
+              price={product.price}
+              priceOld={product.priceOld}
+              priceUnit={product.priceUnit}
+              features={product.features}
+            />
           ))}
           {filtered.length === 0 && (
             <div className="col-span-3 text-center py-12 text-[var(--color-text-light)]">

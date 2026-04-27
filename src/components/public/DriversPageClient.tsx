@@ -143,10 +143,10 @@ export default function DriversPageClient({ drivers }: { drivers: DbDriver[] }) 
                   <div key={driver.id} className="driver-card">
                     <div className="driver-icon">🖨️</div>
                     <h3 className="driver-name">{driver.name}</h3>
-                    <div className="driver-os-badges">
+                    {/* <div className="driver-os-badges">
                       {hasWindows && <span className="driver-os-badge">Windows</span>}
                       {hasMacos && <span className="driver-os-badge macos">macOS</span>}
-                    </div>
+                    </div> */}
                     <p className="driver-desc">{driver.description}</p>
                     <div className="driver-actions">
                       {hasWindows && (

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import ProductCard from "@/components/public/ProductCard";
 import FloatingButtons from "@/components/public/FloatingButtons";
 
 export type ProductItem = {
@@ -192,45 +192,22 @@ export default function ProductsPageClient({ products, filters }: { products: Pr
               <p>Liên hệ với chúng tôi để được tư vấn</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-6">
               {filtered.map((product) => (
-                <div key={product.slug} className="product-card-listing">
-                  <div className="product-card-img">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      width={400}
-                      height={300}
-                      style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }}
-                    />
-                    {product.badge && (
-                      <span className={`product-badge ${product.badgeType}`}>{product.badge}</span>
-                    )}
-                  </div>
-                  <div className="product-card-body">
-                    <span className="product-card-category">{product.categoryLabel}</span>
-                    <h3 className="product-card-name">
-                      <Link href={`/products/${product.slug}`}>{product.name}</Link>
-                    </h3>
-                    <p className="product-card-desc">{product.desc}</p>
-                    <div className="product-card-price">
-                      {product.price}
-                      {product.oldPrice && <span className="old-price">{product.oldPrice}</span>}
-                      {product.priceUnit && (
-                        <span className="price-unit ml-1">{product.priceUnit}</span>
-                      )}
-                    </div>
-                    <ul className="product-card-features">
-                      {product.features.map((f, i) => (
-                        <li key={i}>{f}</li>
-                      ))}
-                    </ul>
-                    <div className="product-card-actions">
-                      <a href="tel:0855285872" className="btn-contact">📞 Mua ngay</a>
-                      <Link href={`/products/${product.slug}`} className="btn-details">Chi tiết</Link>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  key={product.slug}
+                  image={product.image}
+                  alt={product.name}
+                  badge={product.badge}
+                  badgeType={product.badgeType}
+                  name={product.name}
+                  slug={`/products/${product.slug}`}
+                  desc={product.desc}
+                  price={product.price}
+                  priceOld={product.oldPrice}
+                  priceUnit={product.priceUnit}
+                  features={product.features}
+                />
               ))}
             </div>
           )}
