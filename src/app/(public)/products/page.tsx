@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import ProductsPageClient from "@/components/public/products/ProductsPageClient";
 
@@ -13,6 +14,13 @@ export const metadata: Metadata = {
     description: "Khám phá các sản phẩm thiết bị bán hàng chuyên dụng tại Hiệp POS.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 function fmtPrice(n: number): string {
@@ -62,5 +70,9 @@ export default async function ProductsPage() {
     ...dbCats.map((c: (typeof dbCats)[0]) => ({ key: c.slug, label: c.name })),
   ];
 
-  return <ProductsPageClient products={products} filters={filters} />;
+  return (
+    <Suspense fallback={<div>Đang tải...</div>}>
+      <ProductsPageClient products={products} filters={filters} />
+    </Suspense>
+  );
 }

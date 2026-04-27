@@ -25,6 +25,7 @@ export default function NewProductForm({ categoryOptions }: { categoryOptions: C
     fullDescription: "",
     badge: "",
     warranty: "",
+    sortOrder: "0",
     isFeatured: false,
     isActive: true,
   });
@@ -122,6 +123,10 @@ export default function NewProductForm({ categoryOptions }: { categoryOptions: C
               <div className="admin-form-group">
                 <label className="admin-form-label">Bảo hành</label>
                 <input name="warranty" type="text" className="admin-form-input" value={form.warranty} onChange={handleChange} placeholder="VD: 12 tháng" />
+              </div>
+              <div className="admin-form-group">
+                <label className="admin-form-label">Thứ tự hiển thị</label>
+                <input name="sortOrder" type="number" className="admin-form-input" value={form.sortOrder} onChange={handleChange} placeholder="VD: 0, 1, 2..." />
               </div>
               <div className="admin-form-group admin-form-full">
                 <MultiImageUpload label="Ảnh sản phẩm" images={images} onChange={setImages} />

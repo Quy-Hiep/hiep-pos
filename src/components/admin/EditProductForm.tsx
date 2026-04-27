@@ -22,6 +22,7 @@ export interface ProductFormData {
   fullDescription: string;
   badge: string;
   warranty: string;
+  sortOrder: string;
   images: ImageItem[];
   isFeatured: boolean;
   isActive: boolean;
@@ -116,6 +117,10 @@ export default function EditProductForm({ product, categoryOptions }: { product:
               <div className="admin-form-group">
                 <label className="admin-form-label">Bảo hành</label>
                 <input name="warranty" type="text" className="admin-form-input" value={form.warranty} onChange={handleChange} title="Bảo hành" placeholder="VD: 12 tháng" />
+              </div>
+              <div className="admin-form-group">
+                <label className="admin-form-label">Thứ tự hiển thị</label>
+                <input name="sortOrder" type="number" className="admin-form-input" value={form.sortOrder} onChange={handleChange} title="Thứ tự" placeholder="VD: 0, 1, 2..." />
               </div>
               <div className="admin-form-group admin-form-full">
                 <MultiImageUpload
