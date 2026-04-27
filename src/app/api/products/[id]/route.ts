@@ -21,7 +21,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   try {
     const body = await req.json();
-    const { name, slug, categoryId, price, originalPrice, description, fullDescription, badge, warranty, images, isFeatured, isActive } = body;
+    const { name, slug, categoryId, price, originalPrice, description, fullDescription, badge, warranty, sortOrder, images, isFeatured, isActive } = body;
 
     const product = await prisma.product.update({
       where: { id },
@@ -35,6 +35,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         fullDescription: fullDescription || null,
         badge: badge || null,
         warranty: warranty || null,
+        sortOrder: sortOrder ? parseInt(sortOrder, 10) : undefined,
         isFeatured,
         isActive,
       },

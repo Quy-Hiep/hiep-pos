@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import ProductCard from "@/components/public/ProductCard";
 import FloatingButtons from "@/components/public/FloatingButtons";
@@ -127,16 +126,19 @@ void _unused;
 
 export default function ProductsPageClient({ products, filters }: { products: ProductItem[]; filters: FilterItem[] }) {
   const searchParams = useSearchParams();
-  const categoryFromUrl = searchParams.get("category") || "all";
-  const [active, setActive] = useState(categoryFromUrl);
-
-  // Sync active state khi URL thay đổi
-  useEffect(() => {
-    setActive(categoryFromUrl);
-  }, [categoryFromUrl]);
+  const router = useRouter();
+  const active = searchParams.get("category") || "all";
 
   const filtered =
     active === "all" ? products : products.filter((p) => p.category === active);
+
+  const handleFilterClick = (key: string) => {
+    if (key === "all") {
+      router.push("/products");
+    } else {
+      router.push(`/products?category=${key}`);
+    }
+  };
 
   return (
     <>
@@ -186,7 +188,7 @@ export default function ProductsPageClient({ products, filters }: { products: Pr
               <button
                 key={f.key}
                 className={`filter-btn ${active === f.key ? "active" : ""}`}
-                onClick={() => setActive(f.key)}
+                onClick={() => handleFilterClick(f.key)}
               >
                 {f.label}
               </button>

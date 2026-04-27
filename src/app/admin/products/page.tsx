@@ -43,6 +43,7 @@ export default async function AdminProductsPage() {
                   <th>Tên sản phẩm</th>
                   <th>Danh mục</th>
                   <th>Giá</th>
+                  <th>Thứ tự</th>
                   <th>Trạng thái</th>
                   <th>Thao tác</th>
                 </tr>
@@ -54,6 +55,7 @@ export default async function AdminProductsPage() {
                     <td className="admin-td-bold">{p.name}</td>
                     <td>{p.category?.name ?? "—"}</td>
                     <td>{formatPrice(p.price)}</td>
+                    <td className="admin-td-muted">{p.sortOrder ?? 0}</td>
                     <td>
                       <span className={`admin-badge ${p.isActive ? "admin-badge-active" : "admin-badge-inactive"}`}>
                         {p.isActive ? "Hoạt động" : "Ẩn"}

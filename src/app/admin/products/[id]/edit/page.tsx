@@ -30,6 +30,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     fullDescription: product.fullDescription ?? "",
     badge: product.badge ?? "",
     warranty: product.warranty ?? "",
+    sortOrder: String(product.sortOrder ?? 0),
     images: product.images.map((img) => ({ url: img.url, alt: img.alt ?? "", sortOrder: img.sortOrder })),
     isFeatured: product.isFeatured,
     isActive: product.isActive,
