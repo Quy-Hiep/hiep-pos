@@ -30,7 +30,14 @@ export default async function ProductsPage() {
       orderBy: { sortOrder: "asc" },
     }),
     prisma.category.findMany({
-      where: { type: "PRODUCT", isActive: true },
+      where: { 
+        type: "PRODUCT", 
+        isActive: true,
+        OR: [
+          { parentId: { not: null } }, // Child categories (menu cấp 2)
+          { children: { none: {} } }, // Hoặc standalone categories không có children
+        ]
+      },
       orderBy: { menuOrder: "asc" },
     }),
   ]);

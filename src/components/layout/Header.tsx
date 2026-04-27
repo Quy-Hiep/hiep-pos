@@ -39,7 +39,9 @@ export default async function Header() {
       navLinks = [
         { href: "/", label: "Trang chủ" },
         ...menuCategories.map((cat) => ({
-          href: buildHref(cat.slug, cat.type),
+          // Menu cấp 1 có children: link đến base URL không param
+          // Menu cấp 1 không có children: link bình thường với category param
+          href: cat.children.length > 0 ? (cat.type === "PRODUCT" ? "/products" : cat.type === "ARTICLE" ? "/news" : "/drivers") : buildHref(cat.slug, cat.type),
           label: cat.name,
           children: cat.children.length > 0
             ? cat.children.map((child) => ({
