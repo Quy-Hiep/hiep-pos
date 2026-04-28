@@ -112,7 +112,7 @@ export default function HeaderClient({ navLinks }: { navLinks: NavLink[] }) {
             className="hidden lg:flex items-center gap-2 bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[var(--color-primary-dark)] transition-colors"
           >
             <PhoneIcon />
-            085 528 5872
+            Dùng thử miễn phí
           </a>
 
           {/* Mobile: Phone + Hamburger */}
@@ -122,7 +122,7 @@ export default function HeaderClient({ navLinks }: { navLinks: NavLink[] }) {
               className="flex items-center gap-1.5 bg-[var(--color-primary)] text-white px-3 py-1.5 rounded-lg text-sm font-semibold"
             >
               <PhoneIcon />
-              Gọi ngay
+              Dùng thử miễn phí
             </a>
             <button
               onClick={() => { setIsOpen(!isOpen); setOpenSub(null); }}
