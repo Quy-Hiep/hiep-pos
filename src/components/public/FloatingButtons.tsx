@@ -50,7 +50,7 @@ export default function FloatingButtons() {
         </svg>
       </a>
       <a
-        href={`https://zalo.me/${settings.socialZalo}`}
+        href={`${settings.socialZalo}`}
         className="fab-item fab-zalo"
         title="Nhắn Zalo"
         target="_blank"
@@ -65,7 +65,7 @@ export default function FloatingButtons() {
         />
       </a>
       <a
-        href={`https://www.facebook.com/${settings.socialFacebook}`}
+        href={`${settings.socialFacebook}`}
         className="fab-item fab-facebook"
         title="Facebook"
         target="_blank"
