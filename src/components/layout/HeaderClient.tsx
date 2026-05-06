@@ -108,7 +108,7 @@ export default function HeaderClient({ navLinks }: { navLinks: NavLink[] }) {
 
           {/* Phone Button — desktop */}
           <a
-            href="tel:0855285872"
+            href="https://www.kiotviet.vn/dang-ky?refcode=12760"
             className="hidden lg:flex items-center gap-2 bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[var(--color-primary-dark)] transition-colors"
           >
             <PhoneIcon />
